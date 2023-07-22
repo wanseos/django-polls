@@ -1,24 +1,26 @@
 # vanilladjango
 
-## project structure
+## Getting Started
+
+> 💡 First, `cd` to the project root directory where `manage.py` is.
+
+1. Make env file.
+```sh
+cp .env.tmpl .env
 ```
-.
-├── Dockerfile
-├── compose.yaml
-├── manage.py
-├── nilla
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── migrations
-│   ├── models
-│   ├── tests.py
-│   └── views.py
-├── requirements.txt
-└── vanilla
-    ├── __init__.py
-    ├── asgi.py
-    ├── settings.py
-    ├── urls.py
-    └── wsgi.py
+
+2. Generate django secret key and add to my `.env` file.
+Run below command and paste the output to `.env`.
+
+```sh
+docker compose exec vanilla python3 -c "import secrets; print(secrets.token_urlsafe(50))"
+```
+
+3. Set your database password in `.env` file.
+
+4. Build docker image
+```sh
+docker compose up db  #build and start `db` container first.
+docker compose build vanilla #build `vanilla` image.
+docker compose up #start service.
 ```
