@@ -1,7 +1,7 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render
 
-from ...models import Question
+from .models import Question
 
 
 def index(request) -> HttpResponse:
