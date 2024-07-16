@@ -8,7 +8,9 @@ services:
       context: vanilla
       dockerfile: Dockerfile.dev
     env_file: env/vanilla.env
-    command: tail -f /dev/null
+    command: >
+      sh -c "poetry install --no-interaction --no-ansi --no-root --no-cache &&
+             python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/vanilla
       - .poetry/venv:/vanilla/.venv
