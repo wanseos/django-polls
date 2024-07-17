@@ -1,11 +1,14 @@
 from django.db.models import F
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import Question, QuestionChoice
+from .serializers import QuestionSerializer
 
 
 class IndexView(generic.ListView):
@@ -29,31 +32,28 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.questionchoice_set.get(
-            pk=request.POST["choice"]
-        )  # noqa
-    except (KeyError, QuestionChoice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(
-            request,
-            "polls/detail.html",
-            {
-                "question": question,
-                "error_message": "You didn't select a choice.",
-            },
-        )
-    else:
-        selected_choice.votes = F("votes") + 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(
-            reverse(
-                "polls:results",
-                args=(question.id,),
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+    @action(detail=True, methods=["post"], url_path="vote")
+    def vote(self, request, pk=None):
+        question = self.get_object()
+        try:
+            selected_choice = question.questionchoice_set.get(
+                pk=request.data.get("choice")
             )
-        )
+        except (KeyError, QuestionChoice.DoesNotExist):
+            return Response(
+                {"error_message": "You didn't select a choice."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        else:
+            selected_choice.votes = F("votes") + 1
+            selected_choice.save()
+            return HttpResponseRedirect(
+                reverse(
+                    "polls:results",
+                    args=(question.id,),
+                )
+            )
