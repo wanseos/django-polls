@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.views import generic
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Question, QuestionChoice
@@ -36,7 +37,12 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
-    @action(detail=True, methods=["post"], url_path="vote")
+    @action(
+        detail=True,
+        methods=["post"],
+        url_path="vote",
+        permission_classes=[IsAuthenticated],
+    )
     def vote(self, request, pk=None):
         question = self.get_object()
         try:
