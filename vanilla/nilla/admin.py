@@ -1,6 +1,3 @@
-from django.contrib import admin
+from .services.polls import admin as polls_admin
 
-from .models import polls_models
-
-admin.site.register(polls_models.Question)
-admin.site.register(polls_models.QuestionChoice)
+polls_admin.register_polls_admin()
