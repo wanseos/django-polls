@@ -1,3 +1,3 @@
-from django.contrib import admin
+from .domain.polls import admin as polls_admin
 
-# Register your models here.
+polls_admin.register_polls_admin()

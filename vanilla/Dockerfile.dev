@@ -1,0 +1,8 @@
+FROM python:3.10.2-slim-bullseye
+WORKDIR /vanilla
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PATH=/vanilla/.venv/bin:/vanilla:/root/.local/bin:$PATH
+RUN python3 -m pip install --no-cache-dir poetry
+RUN poetry config virtualenvs.in-project true
+COPY . /vanilla/
