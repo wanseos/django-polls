@@ -25,7 +25,7 @@
 			"settings": {
 				"[python]": {
 					"editor.codeActionsOnSave": {
-						"ruff.executeOrganizeImports": "always"
+						"source.organizeImports": "always"
 					},
 					"editor.defaultFormatter": "charliermarsh.ruff",
 					"editor.formatOnSave": true,
