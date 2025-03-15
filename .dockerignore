@@ -1,6 +1,0 @@
-__pycache__/
-.git
-.gitignore
-.venv
-db.sqlite3
-venv/
