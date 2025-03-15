@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/devcontainers/python:1-3.12-bookworm
 
-ARG UV_ENV_FILE=.env
-
 USER vscode
 RUN pip install pre-commit
 
