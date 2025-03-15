@@ -1,3 +1,3 @@
-# Project Vanilla
+# Django Polls - REST API Example
 
-An example django application with single-app structure.
+A simple REST API implementation using Django.
